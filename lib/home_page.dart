@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+@immutable
 class State {
-  State({this.counter = 0});
-  int counter;
+  const State({required this.counter});
+  final int counter;
+
+  State copyWith({int? counter}) {
+    return State(counter: counter ?? this.counter);
+  }
 }
 
 // create the actions you wish to dispatch to the reducer
@@ -23,7 +28,7 @@ class HomePage extends HookWidget {
     State reducer(State state, IncrementCounter? action) {
       if (action is IncrementCounter) {
         // stateの古い値 + actionのcounterを足す
-        return state..counter = state.counter + action.counter;
+        return state.copyWith(counter: state.counter + action.counter);
       }
       return state;
     }
@@ -35,7 +40,7 @@ class HomePage extends HookWidget {
     // 値が変更されるたびに、このWidgetは再構築されます！
     final store = useReducer(
       reducer,
-      initialState: State(),
+      initialState: const State(counter: 0),
       initialAction: IncrementCounter(counter: 0),
     );
 
