@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:reducer_sample/counter_action.dart';
 
-@immutable
-class State {
-  const State({required this.counter});
-  final int counter;
-
-  State copyWith({int? counter}) {
-    return State(counter: counter ?? this.counter);
-  }
-}
-
-// create the actions you wish to dispatch to the reducer
-// reducerに送りたいアクションを作成する
 class IncrementCounter {
   IncrementCounter({required this.counter});
   final int counter;
@@ -23,44 +12,51 @@ class HomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // create the reducer function that will handle the actions you dispatch
-    // 送るアクションを扱うreducer関数を作成する
-    State reducer(State state, IncrementCounter? action) {
-      if (action is IncrementCounter) {
-        // stateの古い値 + actionのcounterを足す
-        return state.copyWith(counter: state.counter + action.counter);
-      }
-      return state;
-    }
-
-    // Next, invoke the 'useReducer' function with the reducer function and initial state to create a
-    // '_store' variable that contains the current state and dispatch. Whenever the value is
-    // changed, this Widget will be rebuilt!
-    // 次に `useReducer` 関数に reducer 関数と初期状態を指定して呼び出すと、現在の状態とディスパッチが格納された `_store` 変数が作成されます。
-    // 値が変更されるたびに、このWidgetは再構築されます！
     final store = useReducer(
       reducer,
-      initialState: const State(counter: 0),
-      initialAction: IncrementCounter(counter: 0),
+      initialState: const CounterState(count: 0),
+      initialAction: const CounterAction.init(),
     );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('useReducer example'),
       ),
-      body: Center(
-        // read the current value from the counter
-        // counterの現在の値を読み取る
-        child: Text('Button tapped ${store.state.counter} times'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // when the button is pressed, dispatch the action you wish to trigger!
-        // This will trigger a rebuild, displaying the latest value in the Text Widget Above.
-        // ボタンが押されたときに、トリガーするアクションをディスパッチします！
-        // これにより、上記のテキストウィジェットに最新の値が表示されるようになります。
-        // 要は、ディスパッチすると、reducer関数が呼ばれて、stateが更新される、そして、Widgetが再構築される
-        onPressed: () => store.dispatch(IncrementCounter(counter: 1)),
-        child: const Icon(Icons.add),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Button tapped ${store.state.count} times',
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () =>
+                    store.dispatch(const CounterAction.increment()),
+                icon: const Icon(Icons.add),
+              ),
+              IconButton(
+                onPressed: () =>
+                    store.dispatch(const CounterAction.decrement()),
+                icon: const Icon(Icons.remove),
+              ),
+              IconButton(
+                onPressed: () =>
+                    store.dispatch(const CounterAction.multiply()),
+                icon: const Icon(Icons.clear),
+              ),
+              IconButton(
+                onPressed: () => store.dispatch(const CounterAction.reset()),
+                icon: const Icon(
+                  Icons.refresh,
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
