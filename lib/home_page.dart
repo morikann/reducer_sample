@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:reducer_sample/counter_action.dart';
 
-class IncrementCounter {
-  IncrementCounter({required this.counter});
-  final int counter;
-}
-
 class HomePage extends HookWidget {
   const HomePage({super.key});
 
