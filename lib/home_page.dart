@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:reducer_sample/counter_action.dart';
+import 'package:reducer_sample/counter_reducer.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});
@@ -10,7 +10,7 @@ class HomePage extends HookWidget {
     final store = useReducer(
       reducer,
       initialState: const CounterState(count: 0),
-      initialAction: const CounterAction.init(),
+      initialAction: CounterInitializeAction() as CounterAction,
     );
 
     return Scaffold(
@@ -30,21 +30,21 @@ class HomePage extends HookWidget {
             children: [
               IconButton(
                 onPressed: () =>
-                    store.dispatch(const CounterAction.increment()),
+                    store.dispatch(CounterIncrementAction()),
                 icon: const Icon(Icons.add),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(const CounterAction.decrement()),
+                    store.dispatch(CounterDecrementAction()),
                 icon: const Icon(Icons.remove),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(const CounterAction.multiply()),
+                    store.dispatch(CounterMultiplyAction()),
                 icon: const Icon(Icons.clear),
               ),
               IconButton(
-                onPressed: () => store.dispatch(const CounterAction.reset()),
+                onPressed: () => store.dispatch(CounterResetAction()),
                 icon: const Icon(
                   Icons.refresh,
                 ),
