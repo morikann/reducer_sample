@@ -11,39 +11,31 @@ class CounterState {
   }
 }
 
-enum CounterAction {
-  add,
-  minus,
-  multiply,
-  reset
+sealed class CounterAction {}
+
+class CounterIncrementAction implements CounterAction {
+  const CounterIncrementAction();
 }
 
-// sealed class CounterAction {}
+class CounterDecrementAction implements CounterAction {
+  const CounterDecrementAction();
+}
 
-// class CounterIncrementAction implements CounterAction {
-//   const CounterIncrementAction();
-// }
+class CounterMultiplyAction implements CounterAction {
+  const CounterMultiplyAction();
+}
 
-// class CounterDecrementAction implements CounterAction {
-//   const CounterDecrementAction();
-// }
-
-// class CounterMultiplyAction implements CounterAction {
-//   const CounterMultiplyAction();
-// }
-
-// class CounterResetAction implements CounterAction {
-//   const CounterResetAction();
-// }
+class CounterResetAction implements CounterAction {
+  const CounterResetAction();
+}
 
 typedef CounterStore = Store<CounterState, CounterAction>;
 typedef CounterReducer = Reducer<CounterState, CounterAction>;
-
 CounterReducer get reducer => (state, action) {
       return switch (action) {
-        CounterAction.add => state.copyWith(count: state.count + 1),
-        CounterAction.minus => state.copyWith(count: state.count - 1),
-        CounterAction.multiply => state.copyWith(count: state.count * 2),
-        CounterAction.reset => state.copyWith(count: 0),
+        CounterIncrementAction() => state.copyWith(count: state.count + 1),
+        CounterDecrementAction() => state.copyWith(count: state.count - 1),
+        CounterMultiplyAction() => state.copyWith(count: state.count * 2),
+        CounterResetAction() => state.copyWith(count: 0),
       };
     };

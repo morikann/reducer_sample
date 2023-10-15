@@ -10,7 +10,7 @@ class HomePage extends HookWidget {
     final CounterStore store = useReducer(
       reducer,
       initialState: const CounterState(),
-      initialAction: CounterAction.reset,
+      initialAction: const CounterResetAction(),
     );
 
     return Scaffold(
@@ -30,21 +30,21 @@ class HomePage extends HookWidget {
             children: [
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterAction.add),
+                    store.dispatch(const CounterIncrementAction()),
                 icon: const Icon(Icons.add),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterAction.minus),
+                    store.dispatch(const CounterDecrementAction()),
                 icon: const Icon(Icons.remove),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterAction.multiply),
+                    store.dispatch(const CounterMultiplyAction()),
                 icon: const Icon(Icons.clear),
               ),
               IconButton(
-                onPressed: () => store.dispatch(CounterAction.reset),
+                onPressed: () => store.dispatch(const CounterResetAction()),
                 icon: const Icon(
                   Icons.refresh,
                 ),
