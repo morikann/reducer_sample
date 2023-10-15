@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 @immutable
 class CounterState {
-  const CounterState({required this.count});
+  const CounterState({this.count = 0});
   final int count;
 
   CounterState copyWith({int? count}) {
@@ -11,26 +11,39 @@ class CounterState {
   }
 }
 
-sealed class CounterAction {}
+enum CounterAction {
+  add,
+  minus,
+  multiply,
+  reset
+}
 
-class CounterInitializeAction implements CounterAction {}
+// sealed class CounterAction {}
 
-class CounterIncrementAction implements CounterAction {}
+// class CounterIncrementAction implements CounterAction {
+//   const CounterIncrementAction();
+// }
 
-class CounterDecrementAction implements CounterAction {}
+// class CounterDecrementAction implements CounterAction {
+//   const CounterDecrementAction();
+// }
 
-class CounterMultiplyAction implements CounterAction {}
+// class CounterMultiplyAction implements CounterAction {
+//   const CounterMultiplyAction();
+// }
 
-class CounterResetAction implements CounterAction {}
+// class CounterResetAction implements CounterAction {
+//   const CounterResetAction();
+// }
 
+typedef CounterStore = Store<CounterState, CounterAction>;
 typedef CounterReducer = Reducer<CounterState, CounterAction>;
 
 CounterReducer get reducer => (state, action) {
       return switch (action) {
-        CounterInitializeAction() => state,
-        CounterIncrementAction() => state.copyWith(count: state.count + 1),
-        CounterDecrementAction() => state.copyWith(count: state.count - 1),
-        CounterMultiplyAction() => state.copyWith(count: state.count * 2),
-        CounterResetAction() => state.copyWith(count: 0),
+        CounterAction.add => state.copyWith(count: state.count + 1),
+        CounterAction.minus => state.copyWith(count: state.count - 1),
+        CounterAction.multiply => state.copyWith(count: state.count * 2),
+        CounterAction.reset => state.copyWith(count: 0),
       };
     };

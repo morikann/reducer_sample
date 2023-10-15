@@ -7,10 +7,10 @@ class HomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = useReducer(
+    final CounterStore store = useReducer(
       reducer,
-      initialState: const CounterState(count: 0),
-      initialAction: CounterInitializeAction() as CounterAction,
+      initialState: const CounterState(),
+      initialAction: CounterAction.reset,
     );
 
     return Scaffold(
@@ -21,7 +21,7 @@ class HomePage extends HookWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Button tapped ${store.state.count} times',
+            'Count: ${store.state.count}',
             style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 24),
@@ -30,21 +30,21 @@ class HomePage extends HookWidget {
             children: [
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterIncrementAction()),
+                    store.dispatch(CounterAction.add),
                 icon: const Icon(Icons.add),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterDecrementAction()),
+                    store.dispatch(CounterAction.minus),
                 icon: const Icon(Icons.remove),
               ),
               IconButton(
                 onPressed: () =>
-                    store.dispatch(CounterMultiplyAction()),
+                    store.dispatch(CounterAction.multiply),
                 icon: const Icon(Icons.clear),
               ),
               IconButton(
-                onPressed: () => store.dispatch(CounterResetAction()),
+                onPressed: () => store.dispatch(CounterAction.reset),
                 icon: const Icon(
                   Icons.refresh,
                 ),
